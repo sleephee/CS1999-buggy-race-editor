@@ -24,7 +24,7 @@ The application is written in Python3 using the
 GitHub repo: [RHUL-CS-Projects/CS1999-buggy-race-editor](https://github.com/RHUL-CS-Projects/CS1999-buggy-race-editor])
 
 
-Developing in a browswer: repl.it
+Developing in a browser: repl.it
 ---------------------------------
 
 We recommend you clone/download this repo onto your own machine where you can
@@ -61,7 +61,7 @@ The recommended way to run this app this on your own machine is to first
 install it:
 
 * install the software (clone this repo)
-* create a virtual evironment
+* create a virtual environment
 * install the dependencies (e.g., Flask) in that environment
 
 Then, to run the application:
@@ -69,7 +69,7 @@ Then, to run the application:
 * activate the virtual environment
 * run the app
 * kill the app with Ctl-C
-* deactivate the virutal environment
+* deactivate the virtual environment
 
 This varies a little depending on which platform you are using.
 
@@ -81,7 +81,7 @@ You must have these two things installed before you can start:
 * [Git](https://git-scm.com) for version control
 
 If they are not already installed on your machine, see the
-downloads/installation instructions on their respevtive websites.
+downloads/installation instructions on their respective websites.
 
 
 #### Installation
@@ -96,7 +96,7 @@ On Windows you can follow these instructions in the PowerShell. Alternatively
 if you use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 (WSL) you can follow the instructions as Linux.
 
-For Mac or Unix-like systems, open a Terminl window.
+For Mac or Unix-like systems, open a Terminal window.
 
 To create the virtual environment, first `cd` to the directory which contains
 the application files (you might have use `git clone` to create it). Then do:
@@ -111,11 +111,15 @@ time to activate the virtual environment. Once you've activated it, all
 subsequent python commands operate within the scope of this environment
 (instead of your whole machine).
 
-Activate the virtual environment. On Windows, do:
+Activate the virtual environment. On Windows in cmd/Powershell:
 
-    .\venv\Scripts\activate
-    
-On Linux or Mac:
+    .\venv\Scripts\activate.bat
+
+On Windows in Git bash:
+
+    ./venv/Scripts/activate
+
+On Linux or Mac (or Windows Git Bash):
 
     source venv/bin/activate
 
@@ -149,9 +153,13 @@ On Linux or Mac:
     source venv/bin/activate
 
 
-Set the environment variable to `development`. On Windows do:
+Set the environment variable to `development`. On Windows cmd/Powershell do:
 
     $env:FLASK_ENV = 'development'
+
+On Windows in Git bash:
+
+    ./venv/Scripts/activate
 
 On Linux or Mac:
 

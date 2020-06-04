@@ -31,7 +31,6 @@ def create_buggy():
       msg = f"Oh no! This is not a number: {qty_wheels}"
       return render_template("buggy-form.html", msg=msg)
     try:
-
       flag_color = request.form['flag_color']
       flag_color_secondary = request.form['flag_color_secondary']
       flag_pattern = request.form['flag_pattern']

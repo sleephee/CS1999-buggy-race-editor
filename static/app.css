@@ -6,14 +6,14 @@ body {
   font-family: "Source Sans Pro","Helvetica Neue",Arial,Helvetica,sans-serif;
   margin: 0;
   padding: 0;
-  font-size: 1.2em;
-  color: #000000;
+  font-size: 0.8em;
+  color: black;
   background: repeating-linear-gradient(
     45deg,
-    #ffffee,
-    #ffffee 2em,
-    #eeeeee 2em,
-    #eeeeee 4em
+    #666699,
+    #666699 2em,
+    #ccccff 2em,
+    #ccccff 4em
   );
 }
 .main-content {
@@ -39,7 +39,7 @@ a.button, input.button {
   box-shadow: 5px 5px 5px #999999;
 }
 a.button:hover {
-  background-color: black;
+  background-color: #666699;
   color: white;
 }
 input {
@@ -47,16 +47,18 @@ input {
   font-size:100%;
 }
 input.button {
-  background-color: #99ff99;
+  background-color: #666699;
 }
 table {
-  border:1px solid black;
+  border:0px solid black;
   border-collapse: collapse;
   margin: 0 0 2em 0;
+  background-color: #ccccff;
+
 }
 table td, table th {
   padding: 0.25em;
-  border: 1px solid #999;
+  border: 0px solid #999;
   padding: 0.5rem;
 }
 .spacer {

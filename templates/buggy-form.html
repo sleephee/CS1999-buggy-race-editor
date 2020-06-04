@@ -4,22 +4,37 @@
 
 {% block content %}
 
-  <h1>Make buggy</h1>
+  <h1>Making The Buggy</h1>
  <p>
    {{ msg }}
  </p>
-  <form action="/new" method="post">
-    <label for="qty_wheels">Number of wheels:</label>
-    <input type="text" name="qty_wheels" />
-    <label for="flag_color">Colour of flag:</label>
-    <input type="text" name="flag_color" />
-    <label for="flag_color_secondary">Colour of secondary flag:</label>
-    <input type="text" name="flag_color_secondary" />
-    <label for="flag_pattern"> Flag pattern:</label>
-    <input type="text" name="flag_pattern" />
-    <input type="submit" class="button">
+ <form action="/new" method="post">
+      <table width="300" border="0">
+        <tbody >
+          <tr>
+            <td align="right"><label for="qty_wheels">Number of wheels:</label></td>
+            <td align="center"> <input type="text" name="qty_wheels" /></td>
+          </tr>
+          <tr>
+            <td align="right"><label for="flag_color">Colour of flag:</label></td>
+            <td align="center"><input type="text" name="flag_color" /></td>
+          </tr>
+          <tr>
+            <td align="right">   <label for="flag_color_secondary">Colour of secondary flag:</label></td>
+            <td align="center"><input type="text" name="flag_color_secondary" /></td>
+          </tr>
+          <tr>
+            <td align="right"><label for="flag_pattern"> Flag pattern:</label></td>
+            <td align="center"><input type="text" name="flag_pattern" /></td>
+          </tr>
+          <tr>
+          <td colspan="2"><input type="submit" class="button">           </td>
+          </tr>
+        </tbody>
+      </table>
+
   </form>
   <p>
-    <a href="/" class="button">home</a>
+    <a href="/" class="button">Home</a>
    </p>
 {% endblock %}

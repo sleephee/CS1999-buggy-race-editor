@@ -26,12 +26,15 @@ def create_buggy():
     return render_template("buggy-form.html")
   elif request.method == 'POST':
     msg=""
+    qty_wheels = request.form['qty_wheels']
+    if not qty_wheels.isdigit():
+      msg = f"Oh no! This is not a number: {qty_wheels}"
+      return render_template("buggy-form.html", msg=msg)
     try:
-      qty_wheels = request.form['qty_wheels']
+
       flag_color = request.form['flag_color']
       flag_color_secondary = request.form['flag_color_secondary']
       flag_pattern = request.form['flag_pattern']
-      msg = f"qty_wheels={qty_wheels}"
       msg = f"flag_colour={flag_color}"
       msg = f"flag_color_secondary={flag_color_secondary}"
       msg = f"flag_pattern={flag_pattern}"

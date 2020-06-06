@@ -13,22 +13,165 @@
         <tbody >
           <tr>
             <td align="right"><label for="qty_wheels">Number of wheels:</label></td>
-            <td align="center"> <input type="text" name="qty_wheels" /></td>
+            <td align="center"> <input type="text" name="qty_wheels" value="{{ buggy['qty_wheels'] }}" /></td>
           </tr>
           <tr>
             <td align="right"><label for="flag_color">Colour of flag:</label></td>
-            <td align="center"><input type="text" name="flag_color" /></td>
+            <td align="center"><input type="text" name="flag_color"   value="{{ buggy['flag_color'] }}"/></td>
           </tr>
           <tr>
-            <td align="right">   <label for="flag_color_secondary">Colour of secondary flag:</label></td>
-            <td align="center"><input type="text" name="flag_color_secondary" /></td>
+            <td align="right"><label for="flag_color_secondary">Colour of secondary flag:</label></td>
+            <td align="center"><input type="text" name="flag_color_secondary"  value="{{ buggy['flag_color_secondary'] }}"/></td>
           </tr>
+
           <tr>
-            <td align="right"><label for="flag_pattern"> Flag pattern:</label></td>
-            <td align="center"><input type="text" name="flag_pattern" /></td>
+            <td align="right"><label for="flag_pattern"> Flag's Pattern (Plain only needs one colour):</label></td>
+            <td align="center">
+                <select type="text" name="flag_pattern" />
+                <option value="Plain"  {% if buggy['flag_pattern'] == 'Plain' %} selected {% endif %} >Plain</option>
+                <option value="vstripe"  {% if buggy['flag_pattern'] == 'vstripe' %} selected {% endif %} >vstripe</option>
+                <option value="hstripe"  {% if buggy['flag_pattern'] == 'hstripe' %} selected {% endif %} >hstripe</option>
+                <option value="dstripe"  {% if buggy['flag_pattern'] == 'dstripe' %} selected {% endif %} >dstripe</option>
+                <option value="checker"  {% if buggy['flag_pattern'] == 'checker' %} selected {% endif %} >checker</option>
+                <option value="spot"   {% if buggy['flag_pattern'] == 'spot' %} selected {% endif %} >spot</option>
+              </select>
+            </td>
           </tr>
+
+            <tr>
+                <td align="right"><label for="power_type"> Primary Motive Power: </label></td>
+                <td align="center">
+                <select type="text" name="power_type" />
+                <option value="Petrol" {%if buggy ['power_type'] == 'Petrol' %} selected {% endif %}>Petrol</option>
+                <option value="Fusion" {%if buggy ['power_type'] == 'Fusion' %} selected {% endif %}>Fusion</option>
+                <option value="Steam" {%if buggy ['power_type'] == 'Steam' %} selected {% endif %}>Steam</option>
+                <option value="Bio" {%if buggy ['power_type'] == 'Bio' %} selected {% endif %}>Bio</option>
+                <option value="Electric" {%if buggy ['power_type'] == 'Electric' %} selected {% endif %}>Electric</option>
+                <option value="Rocket" {%if buggy ['power_type'] == 'Rocket' %} selected {% endif %}>Rocket</option>
+                <option value="Hamster" {%if buggy ['power_type'] == 'Hamster' %} selected {% endif %}>Hamster</option>
+                <option value="Thermo" {%if buggy ['power_type'] == 'Thermo' %} selected {% endif %}>Thermo</option>
+                <option value="Solar" {%if buggy ['power_type'] == 'Solar' %} selected {% endif %}>Solar</option>
+                <option value="Wind" {%if buggy['power_type'] == 'Wind' %} selected {% endif %}>Wind</option>
+                    </select>
+                </td>
+            </tr>
+
           <tr>
-          <td colspan="2"><input type="submit" class="button">           </td>
+              <td align="right"><label for="aux_power_type">Auxiliary motive power: </label></td>
+            <td align="center">
+              <select type="text" name="aux_power type" />
+             <option value="Petrol" {% if buggy ['aux_power_type'] == 'Petrol' %} selected {% endif %}>Petrol</option>
+                <option value="Fusion" {% if buggy ['aux_power_type'] == 'Fusion' %} selected {% endif %}>Fusion</option>
+                <option value="Steam" {% if buggy ['aux_power_type'] == 'Steam' %} selected {% endif %}>Steam</option>
+                <option value="Bio" {% if buggy ['aux_power_type'] == 'Bio' %} selected {% endif %}>Bio</option>
+                <option value="Electric" {% if buggy ['aux_power_type'] == 'Electric' %} selected {% endif %}>Electric</option>
+                <option value="Rocket" {% if buggy ['aux_power_type'] == 'Rocket' %} selected {% endif %}>Rocket</option>
+                <option value="Hamster" {% if buggy ['aux_power_type'] == 'Hamster' %} selected {% endif %}>Hamster</option>
+                <option value="Thermo" {% if buggy ['aux_power_type'] == 'Thermo' %} selected {% endif %}>Thermo</option>
+                <option value="Solar" {% if buggy ['aux_power_type'] == 'Solar' %} selected {% endif %}>Solar</option>
+                <option value="Wind" {% if buggy['aux_power_type'] == 'Wind' %} selected {% endif %}>Wind</option>
+                </select>
+            </td>
+          </tr>
+
+          <tr>
+              <td align="right"><label for="hamster_booster">Hamster Booster:</label></td>
+            <td align="center"> <input type="text" name="hamster_booster" value="{{ buggy['hamster_booster'] }}" /></td>
+          </tr>
+
+          <tr>
+           <td align="right"><label for="tyres">Type of tyres:</label></td>
+          <td align="center">
+              <select type="text" name="tyres" />
+              <option value="Knobbly" {% if buggy['tyres'] == 'Knobbly' %} selected {% endif %}>Knobbly</option>
+              <option value="Slick" {% if buggy['tyres'] == 'Slick' %} selected {% endif %}>Slick</option>
+              <option value="Steelband" {% if buggy['tyres'] == 'Steelband' %} selected {% endif %}>Steelband</option>
+              <option value="Reactive" {% if buggy['tyres'] == 'Reactive' %} selected {% endif %}>Reactive</option>
+              <option value="Maglev" {% if buggy['tyres'] == 'Maglev' %} selected {% endif %}>Maglev</option>
+              </select>
+          </td>
+          </tr>
+
+          <tr>
+              <td align="right"><label for ="qty_tyres">Number of tyres:</label> </td>
+              <td align="center"> <input type="text" name="qty_tyres" value="{{ buggy['qty_tyres'] }}" /></td>
+          </tr>
+
+          <tr>
+              <td align="right"><label for="armour">Armour:</label></td>
+              <td align="center">
+                  <select type="text" name="armour" />
+                  <option value ="None" {%if buggy['armour'] == 'None' %} selected {% endif %}>None</option>
+                  <option value ="Wood" {%if buggy['armour'] == 'Wood' %} selected {% endif %}>Wood</option>
+                  <option value ="Aluminium" {%if buggy['armour'] == 'Aluminium' %} selected {% endif %}>Aluminium</option>
+                  <option value ="Thinsteel" {%if buggy['armour'] == 'Thinsteel' %} selected {% endif %}>Thinsteel</option>
+                  <option value ="Thicksteel" {%if buggy['armour'] == 'Thicksteel' %} selected {% endif %}>Thicksteel</option>
+                  <option value ="Titanium" {%if buggy['armour'] == 'Titanium' %} selected {% endif %}>Titanium </option>
+                  </select>
+              </td>
+          </tr>
+
+          <tr>
+              <td align="right"><label for ="attack">Offensive capability</label></td>
+              <td align="center">
+                  <select type="text" name="attack" />
+                  <option value ="None" {% if buggy['attack'] == 'None' %} selected {% endif %} >None</option>
+                  <option value ="Spike" {% if buggy['attack'] == 'Spike' %} selected {% endif %} >Spike</option>
+                  <option value ="Flame" {% if buggy['attack'] == 'Flame' %} selected {% endif %} >Flame</option>
+                  <option value ="Charge" {% if buggy['attack'] == 'Charge' %} selected {% endif %} >Charge</option>
+                  <option value ="Biohazard" {% if buggy['attack'] == 'Biohazard' %} selected {% endif %} >Biohazard</option>
+                  </select>
+              </td>
+          </tr>
+
+          <tr>
+              <td align="right"><label for ="qty_attacks">Number of attacks:</label> </td>
+              <td align="center"> <input type="text" name="qty_attacks" value="{{ buggy['qty_attacks'] }}" /></td>
+          </tr>
+
+            <tr>
+                <td align="right"><label for ="fireproof">Fireproof:</label></td>
+                <td align="center">
+                <select type="text" name="fireproof" />
+                    <option>yes</option>
+                    <option>no</option>
+                    </select>
+                </td>
+            </tr>
+
+          <tr>
+                <td align="right"><label for ="insulated">Insulated:</label></td>
+                <td align="center">
+                <select type="text" name="insulated" />
+                    <option>yes</option>
+                    <option>no</option>
+                </td>
+            </tr>
+
+          <tr>
+                <td align="right"><label for ="antibiotic">Antibiotic:</label></td>
+                <td align="center">
+                <select type="text" name="antibiotic" />
+                    <option>yes</option>
+                    <option>no</option>
+                    </select>
+                </td>
+            </tr>
+
+          <tr>
+                <td align="right"><label for ="banging">Banging sound system:</label></td>
+                <td align="center">
+                <select type="text" name="banging" />
+                    <option>yes</option>
+                    <option>no</option>
+                    </select>
+                </td>
+            </tr>
+
+
+
+          <tr>
+          <td colspan="2"><input type="submit" class="button"> </td>
           </tr>
         </tbody>
       </table>
@@ -37,4 +180,5 @@
   <p>
     <a href="/" class="button">Home</a>
    </p>
-{% endblock %}
+{% endblock %}<!doctype html>
+

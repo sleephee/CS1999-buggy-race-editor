@@ -30,26 +30,53 @@ def create_buggy():
         cur = con.cursor()
         cur.execute("SELECT * FROM buggies")
         record = cur.fetchone();
-
         return render_template("buggy-form.html", buggy=record)
     elif request.method == 'POST':
+
         msg = ""
-        qty_wheels = request.form['qty_wheels']
+        violations=""
+        global cost
+        cost = 0
+
+        qty_wheels=request.form['qty_wheels']
+        con = sql.connect(DATABASE_FILE)
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM buggies")
+        record = cur.fetchone();
         if not qty_wheels.isdigit():
             msg = f"Oh no! This is not a number: {qty_wheels}"
-            return render_template("buggy-form.html", msg=msg)
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+        if (int(qty_wheels) < 4)  or  (int(qty_wheels)%2 ==1):
+            msg = f"The number of wheels must be even: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        flag_color = request.form['flag_color']
+        flag_color_secondary = request.form['flag_color_secondary']
+        flag_pattern = request.form['flag_pattern']
+        power_type = request.form['power_type']
+        power_units = request.form['power_units']
+        aux_power_types = request.form['aux_power_types']
+        hamster_booster = request.form['hamster_booster']
+        tyres = request.form['tyres']
+        qty_tyres = request.form[' qty_tyres']
+        armour = request.form['armour ']
+        attack = request.form[' attack ']
+        qty_attacks = request.form['qty_attacks']
+        fireproof = request.form['fireproof']
+        insulated = request.form[' insulated ']
+        antibiotic = request.form['antibiotic']
+        banging = request.form['banging ']
+        algo= request.form[' algo']
+
         try:
-            flag_color = request.form['flag_color']
-            flag_color_secondary = request.form['flag_color_secondary']
-            flag_pattern = request.form['flag_pattern']
-            msg = f"flag_colour={flag_color}"
-            msg = f"flag_color_secondary={flag_color_secondary}"
-            msg = f"flag_pattern={flag_pattern}"
+
+            msg = f"qty_wheels={qty_wheels}"
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
                 cur.execute(
-                    "UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=? WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, DEFAULT_BUGGY_ID)
+                    "UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?,power_units=?,aux_power_types=?, hamster_booster=?, tyres=?, qty_tyres=?, armour=?,  attack=?,  qty_attacks=?, fireproof=?,  insulated=?, antibiotic=?,banging=?, algo=?  WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_types, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo, DEFAULT_BUGGY_ID)
                 )
                 con.commit()
                 msg = "Record successfully saved"
@@ -59,6 +86,7 @@ def create_buggy():
         finally:
             con.close()
             return render_template("updated.html", msg=msg)
+
 
 
 # ------------------------------------------------------------
@@ -127,3 +155,4 @@ def delete_buggy():
 
 if __name__ == '__main__':
     app.run(debug=True, host="localhost", port=5000)
+

@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3 as sql
+import os
+
 
 app = Flask(__name__)
+
 
 DATABASE_FILE = "database.db"
 DEFAULT_BUGGY_ID = "1"
@@ -16,6 +19,18 @@ BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
 def home():
     return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL)
 
+# ------------------------------------------------------------
+#  init cost
+# ------------------------------------------------------------
+def get_cost():
+    costdict={
+        "hamster_booster":5, "fireproof":70,"insulated":100,"antibiotic":90,"banging":42,
+        "petrol":4,"fusion":400,"steam":3,"bio":5,"electric":20,"rocket":16,"hamster":3,"thermo":300,"solar":40,"wind":20,
+        "knobbly":15,"slick":10,"steelband":20,"reactive":40,"maglev":50,
+        "none":0,"wood":40,"aluminium":200,"thinsteel":100,"thicksteel":200,"titanium":290,
+        "spike":5,"flame":20,"charge":28,"biohazard":30
+    }
+    return costdict
 
 # ------------------------------------------------------------
 # creating a new buggy:
@@ -28,15 +43,13 @@ def create_buggy():
         con = sql.connect(DATABASE_FILE)
         con.row_factory = sql.Row
         cur = con.cursor()
-        cur.execute("SELECT * FROM buggies")
+        cur.execute("SELECT  * FROM buggies order by ID desc limit 1")
         record = cur.fetchone();
-        return render_template("buggy-form.html", buggy=record)
+        return render_template("buggy-form.html", buggy=record,new=True)
     elif request.method == 'POST':
 
         msg = ""
-        violations=""
-        global cost
-        cost = 0
+        costs=get_cost()
 
         qty_wheels=request.form['qty_wheels']
         con = sql.connect(DATABASE_FILE)
@@ -51,33 +64,72 @@ def create_buggy():
             msg = f"The number of wheels must be even: {qty_wheels}"
             return render_template("buggy-form.html", msg=msg, buggy=record)
 
-        flag_color = request.form['flag_color']
-        flag_color_secondary = request.form['flag_color_secondary']
+        flag_color = request.form['flag_color'].strip()
+        flag_color_secondary = request.form['flag_color_secondary'].strip()
         flag_pattern = request.form['flag_pattern']
         power_type = request.form['power_type']
         power_units = request.form['power_units']
-        aux_power_types = request.form['aux_power_types']
+        aux_power_type = request.form['aux_power_type']
+        aux_power_units=request.form['aux_power_units']
         hamster_booster = request.form['hamster_booster']
         tyres = request.form['tyres']
-        qty_tyres = request.form[' qty_tyres']
-        armour = request.form['armour ']
-        attack = request.form[' attack ']
+        qty_tyres = request.form['qty_tyres']
+        armour = request.form['armour']
+        attack = request.form['attack']
         qty_attacks = request.form['qty_attacks']
         fireproof = request.form['fireproof']
-        insulated = request.form[' insulated ']
+        insulated = request.form['insulated']
         antibiotic = request.form['antibiotic']
-        banging = request.form['banging ']
-        algo= request.form[' algo']
+        banging = request.form['banging']
+        algo= request.form['algo']
+
+        if not qty_wheels.isdigit():
+            msg = f"Oh no! This is not a number: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+        if (int(qty_wheels) < 4) or (int(qty_wheels) % 2 == 1):
+            msg = f"The number of wheels must be even: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if int(power_units) < 1:
+            msg = f"The number of primary power units must be greater than 1: {power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not aux_power_units.isdigit():
+            msg = f"Please enter a number for the auxiliary power units.: {aux_power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not hamster_booster.isdigit:
+            msg = f"Please enter a number for the Hamster boosters:  {hamster_booster}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not qty_attacks.isdigit:
+            msg = f"Please enter a number for the number of attacks! {qty_attacks}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'thermo' and int(power_units) != 1:
+            msg = f"You are only allowed one unit for non-consumable power!: {power_units, power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'solar' and int(power_units) != 1:
+            msg = f"You are only allowed one unit for non-consumable power!: {power_units, pwoer_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        total_cost=int(power_units)*costs[power_type.lower()] +int(aux_power_units)*costs[aux_power_type.lower()]+int(hamster_booster)*costs['hamster_booster']+\
+                   int(aux_power_units)*costs[tyres.lower()] +costs[armour.lower()]+costs[attack.lower()]+int(fireproof)*costs['fireproof']+int(insulated)*costs['insulated']+int(antibiotic)*costs['antibiotic']
+
 
         try:
-
-            msg = f"qty_wheels={qty_wheels}"
             with sql.connect(DATABASE_FILE) as con:
                 cur = con.cursor()
+              #  cur.execute(
+              #      "UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?,power_units=?,aux_power_type=?,aux_power_units=?, hamster_booster=?, tyres=?, qty_tyres=?, armour=?,  attack=?,  qty_attacks=?, fireproof=?,  insulated=?, antibiotic=?,banging=?, algo=? ,total_cost=? WHERE id=?",
+              #      (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type,aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo,total_cost, DEFAULT_BUGGY_ID)
+              #  )
                 cur.execute(
-                    "UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?,power_units=?,aux_power_types=?, hamster_booster=?, tyres=?, qty_tyres=?, armour=?,  attack=?,  qty_attacks=?, fireproof=?,  insulated=?, antibiotic=?,banging=?, algo=?  WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_types, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo, DEFAULT_BUGGY_ID)
+                    "INSERT INTO buggies (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type,aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo,total_cost) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type,aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo,total_cost)
                 )
+
                 con.commit()
                 msg = "Record successfully saved"
         except:
@@ -98,30 +150,126 @@ def show_buggies():
     con.row_factory = sql.Row
     cur = con.cursor()
     cur.execute("SELECT * FROM buggies")
-    record = cur.fetchone();
-    return render_template("buggy.html", buggy=record)
+    records = cur.fetchall();
+    return render_template("buggy.html", buggies=records)
 
 
 # ------------------------------------------------------------
 # a page for displaying the buggy
 # ------------------------------------------------------------
-@app.route('/new')
-def edit_buggy():
-    return render_template("buggy-form.html")
+@app.route('/edit/<buggy_id>', methods=['GET', 'POST'])
+def edit_buggy(buggy_id):
+    if request.method == 'GET':
+        con = sql.connect(DATABASE_FILE)
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM buggies  WHERE id=?",buggy_id)
+        record = cur.fetchone();
+        return render_template("buggy-form.html", buggy=record)
+    elif request.method == 'POST':
+        costs=get_cost()
+
+        qty_wheels=request.form['qty_wheels']
+        con = sql.connect(DATABASE_FILE)
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("SELECT * FROM buggies")
+        record = cur.fetchone();
+        if not qty_wheels.isdigit():
+            msg = f"Oh no! This is not a number: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+        if (int(qty_wheels) < 4)  or  (int(qty_wheels)%2 ==1):
+            msg = f"The number of wheels must be even: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        flag_color = request.form['flag_color'].strip()
+        flag_color_secondary = request.form['flag_color_secondary'].strip()
+        flag_pattern = request.form['flag_pattern']
+        power_type = request.form['power_type']
+        power_units = request.form['power_units']
+        aux_power_type = request.form['aux_power_type']
+        aux_power_units=request.form['aux_power_units']
+        hamster_booster = request.form['hamster_booster']
+        tyres = request.form['tyres']
+        qty_tyres = request.form['qty_tyres']
+        armour = request.form['armour']
+        attack = request.form['attack']
+        qty_attacks = request.form['qty_attacks']
+        fireproof = request.form['fireproof']
+        insulated = request.form['insulated']
+        antibiotic = request.form['antibiotic']
+        banging = request.form['banging']
+        algo= request.form['algo']
+
+        if not qty_wheels.isdigit():
+            msg = f"Oh no! This is not a number: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+        if (int(qty_wheels) < 4) or (int(qty_wheels) % 2 == 1):
+            msg = f"The number of wheels must be even: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if int(power_units) < 1:
+            msg = f"The number of primary power units must be greater than 1: {power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not aux_power_units.isdigit():
+            msg = f"Please enter a number for the auxiliary power units.: {aux_power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not hamster_booster.isdigit:
+            msg = f"Please enter a number for the Hamster boosters:  {hamster_booster}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not qty_attacks.isdigit:
+            msg = f"Please enter a number for the number of attacks! {qty_attacks}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'thermo' and int(power_units) != 1:
+            msg = f"You are only allowed one unit for non-consumable power!: {power_units, power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'solar' and int(power_units) != 1:
+            msg = f"You are only allowed one unit for non-consumable power!: {power_units, pwoer_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        total_cost=int(power_units)*costs[power_type.lower()] +int(aux_power_units)*costs[aux_power_type.lower()]+int(hamster_booster)*costs['hamster_booster']+\
+                   int(aux_power_units)*costs[tyres.lower()] +costs[armour.lower()]+costs[attack.lower()]+int(fireproof)*costs['fireproof']+int(insulated)*costs['insulated']+int(antibiotic)*costs['antibiotic']
+        try:
+            with sql.connect(DATABASE_FILE) as con:
+                cur = con.cursor()
+                cur.execute(
+                    "UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?,power_units=?,aux_power_type=?,aux_power_units=?, hamster_booster=?, tyres=?, qty_tyres=?, armour=?,  attack=?,  qty_attacks=?, fireproof=?,  insulated=?, antibiotic=?,banging=?, algo=? ,total_cost=? WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type,aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo,total_cost, buggy_id)
+                )
+                cur.execute(
+                    "INSERT INTO buggies (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type,aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo,total_cost) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type,aux_power_units, hamster_booster, tyres, qty_tyres, armour, attack, qty_attacks, fireproof,insulated, antibiotic, banging, algo,total_cost)
+                )
+
+                con.commit()
+                msg = "Record successfully saved"
+        except:
+            con.rollback()
+            msg = "error in update operation"
+        finally:
+            con.close()
+            return render_template("updated.html", msg=msg)
+
+
 
 
 # ------------------------------------------------------------
 # get JSON from current record
 #   this is still probably right, but we won't be
-#   using it because we'll be dipping diectly into the
+#   using it because we'll be dipping directly into the
 #   database
 # ------------------------------------------------------------
-@app.route('/json')
-def summary():
+@app.route('/json/<buggy_id>')
+def summary(buggy_id):
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
-    cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
+    cur.execute("SELECT * FROM buggies WHERE id=? ", buggy_id)
     return jsonify(
         {k: v for k, v in dict(zip(
             [column[0] for column in cur.description], cur.fetchone())).items()
@@ -136,13 +284,13 @@ def summary():
 #   there always being a record to update (because the
 #   student needs to change that!)
 # ------------------------------------------------------------
-@app.route('/delete', methods=['POST'])
-def delete_buggy():
+@app.route('/delete/<buggy_id>', methods=['POST', 'GET'])
+def delete_buggy(buggy_id):
     try:
         msg = "deleting buggy"
         with sql.connect(DATABASE_FILE) as con:
             cur = con.cursor()
-            cur.execute("DELETE FROM buggies")
+            cur.execute("DELETE FROM buggies  where id=?",buggy_id)
             con.commit()
             msg = "Buggy deleted"
     except:

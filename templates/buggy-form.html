@@ -4,28 +4,31 @@
 
 {% block content %}
 
-  <h1>Making The Buggy</h1>
+  <h1>
+      {% if buggy %}
+        Edit buggy #{{ buggy ['id']}}
+      {% else %}
+        Making a Buggy
+      {% endif %}
+  </h1>
  <p>
    {{ msg }}
  </p>
  <form action="/new" method="post">
-      <table width="300" border="0">
+      <table width="800" border="0">
         <tbody >
           <tr>
             <td align="right"><label for="qty_wheels">Number of wheels:</label></td>
-            <td align="center"> <input type="text" name="qty_wheels" value="{{ buggy['qty_wheels'] }}" /></td>
-          </tr>
-          <tr>
+            <td class="firstLine" align="center" > <input type="text" name="qty_wheels" value="{{ buggy['qty_wheels'] }}" /></td>
+
             <td align="right"><label for="flag_color">Colour of flag:</label></td>
             <td align="center"><input type="text" name="flag_color"   value="{{ buggy['flag_color'] }}"/></td>
           </tr>
           <tr>
             <td align="right"><label for="flag_color_secondary">Colour of secondary flag:</label></td>
             <td align="center"><input type="text" name="flag_color_secondary"  value="{{ buggy['flag_color_secondary'] }}"/></td>
-          </tr>
 
-          <tr>
-            <td align="right"><label for="flag_pattern"> Flag's Pattern (Plain only needs one colour):</label></td>
+            <td align="right"><label for="flag_pattern">Flag's Pattern (Plain only needs one colour):</label></td>
             <td align="center">
                 <select type="text" name="flag_pattern" />
                 <option value="Plain"  {% if buggy['flag_pattern'] == 'Plain' %} selected {% endif %} >Plain</option>
@@ -54,12 +57,15 @@
                 <option value="Wind" {%if buggy['power_type'] == 'Wind' %} selected {% endif %}>Wind</option>
                     </select>
                 </td>
-            </tr>
+
+              <td align="right"><label for="power_units">Power Units:</label></td>
+            <td align="center"> <input type="text" name="power_units" value="{{ buggy['power_units'] }}" /></td>
+          </tr>
 
           <tr>
               <td align="right"><label for="aux_power_type">Auxiliary motive power: </label></td>
             <td align="center">
-              <select type="text" name="aux_power type" />
+              <select type="text" name="aux_power_type" />
              <option value="Petrol" {% if buggy ['aux_power_type'] == 'Petrol' %} selected {% endif %}>Petrol</option>
                 <option value="Fusion" {% if buggy ['aux_power_type'] == 'Fusion' %} selected {% endif %}>Fusion</option>
                 <option value="Steam" {% if buggy ['aux_power_type'] == 'Steam' %} selected {% endif %}>Steam</option>
@@ -72,14 +78,14 @@
                 <option value="Wind" {% if buggy['aux_power_type'] == 'Wind' %} selected {% endif %}>Wind</option>
                 </select>
             </td>
-          </tr>
 
+              <td align="right"><label for="aux_power_units">Aux Power Units:</label></td>
+            <td align="center"> <input type="text" name="aux_power_units" value="{{ buggy['aux_power_units'] }}" /></td>
+          </tr>
           <tr>
               <td align="right"><label for="hamster_booster">Hamster Booster:</label></td>
             <td align="center"> <input type="text" name="hamster_booster" value="{{ buggy['hamster_booster'] }}" /></td>
-          </tr>
 
-          <tr>
            <td align="right"><label for="tyres">Type of tyres:</label></td>
           <td align="center">
               <select type="text" name="tyres" />
@@ -95,9 +101,7 @@
           <tr>
               <td align="right"><label for ="qty_tyres">Number of tyres:</label> </td>
               <td align="center"> <input type="text" name="qty_tyres" value="{{ buggy['qty_tyres'] }}" /></td>
-          </tr>
 
-          <tr>
               <td align="right"><label for="armour">Armour:</label></td>
               <td align="center">
                   <select type="text" name="armour" />
@@ -122,9 +126,7 @@
                   <option value ="Biohazard" {% if buggy['attack'] == 'Biohazard' %} selected {% endif %} >Biohazard</option>
                   </select>
               </td>
-          </tr>
 
-          <tr>
               <td align="right"><label for ="qty_attacks">Number of attacks:</label> </td>
               <td align="center"> <input type="text" name="qty_attacks" value="{{ buggy['qty_attacks'] }}" /></td>
           </tr>
@@ -133,18 +135,16 @@
                 <td align="right"><label for ="fireproof">Fireproof:</label></td>
                 <td align="center">
                 <select type="text" name="fireproof" />
-                    <option>yes</option>
-                    <option>no</option>
+                    <option value="1" {% if buggy['fireproof'] == 1 %} selected {% endif %}>TRUE</option>
+                    <option value="0" {% if buggy['fireproof'] == 0 %} selected {% endif %}>FALSE</option>
                     </select>
                 </td>
-            </tr>
 
-          <tr>
                 <td align="right"><label for ="insulated">Insulated:</label></td>
                 <td align="center">
                 <select type="text" name="insulated" />
-                    <option>yes</option>
-                    <option>no</option>
+                    <option value="1"  {% if buggy['insulated'] == 1 %} selected {% endif %}>TRUE</option>
+                    <option value="0"  {% if buggy['insulated'] == 0 %} selected {% endif %}>FALSE</option>
                 </td>
             </tr>
 
@@ -152,33 +152,47 @@
                 <td align="right"><label for ="antibiotic">Antibiotic:</label></td>
                 <td align="center">
                 <select type="text" name="antibiotic" />
-                    <option>yes</option>
-                    <option>no</option>
+                    <option value="1"  {% if buggy['antibiotic'] == 1 %} selected {% endif %}>TRUE</option>
+                    <option value="0"  {% if buggy['antibiotic'] == 0 %} selected {% endif %}>FALSE</option>
                     </select>
                 </td>
-            </tr>
 
-          <tr>
                 <td align="right"><label for ="banging">Banging sound system:</label></td>
                 <td align="center">
-                <select type="text" name="banging" />
-                    <option>yes</option>
-                    <option>no</option>
+                <select type="text" name="banging"  />
+                    <option value="1"  {% if buggy['banging'] == 1 %} selected {% endif %}>TRUE</option>
+                    <option value="0"  {% if buggy['banging'] == 0 %} selected {% endif %}>FALSE</option>
                     </select>
                 </td>
+            </tr>
+          <tr>
+                <td align="right"><label for ="algo">Race Computer algoritm:</label></td>
+                <td align="center">
+                <select type="text" name="algo" />
+                    <option value="defensive"  {% if buggy['algo'] == 'defensive' %} selected {% endif %} >defensive</option>
+                    <option value="steady"     {% if buggy['algo'] == 'steady' %} selected {% endif %}  > steady</option>
+                    <option value="offensive"  {% if buggy['algo'] == 'offensive' %} selected {% endif %} >offensive</option>
+                    <option value="titfortat"   {% if buggy['algo'] == 'titfortat' %} selected {% endif %} >titfortat</option>
+                    <option value="random"    {% if buggy['algo'] == 'random' %} selected {% endif %} >random</option>
+                    <option value="buggy"   {% if buggy['algo'] == 'buggy' %} selected {% endif %} >buggy</option>
+                    </select>
+                </td>
+
+                <td align="right"> </td>
+                <td align="center">  </td>
             </tr>
 
 
 
           <tr>
-          <td colspan="2"><input type="submit" class="button"> </td>
+             <td></td>
+             <td ><input type="submit" class="button"> </td>
+              <td align="right"> <a href="/" class="button"> Home  </a> </td>
+              <td></td>
           </tr>
         </tbody>
       </table>
 
   </form>
-  <p>
-    <a href="/" class="button">Home</a>
-   </p>
-{% endblock %}<!doctype html>
 
+{% endblock %}<!doctype html>

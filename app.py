@@ -218,6 +218,7 @@ def edit_buggy(buggy_id):
         costs=get_cost()
 
         qty_wheels=request.form['qty_wheels']
+
         con = sql.connect(DATABASE_FILE)
         con.row_factory = sql.Row
         cur = con.cursor()
@@ -227,8 +228,87 @@ def edit_buggy(buggy_id):
         if not qty_wheels.isdigit():
             msg = f"Oh no! This is not a number: {qty_wheels}"
             return render_template("buggy-form.html", msg=msg, buggy=record)
-        if (int(qty_wheels) < 4)  or  (int(qty_wheels)%2 ==1):
+        if (int(qty_wheels) < 4) or (int(qty_wheels) % 2 == 1):
             msg = f"The number of wheels must be even: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not qty_wheels.isdigit():
+            msg = f"Oh no! This is not a number: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+        if (int(qty_wheels) < 4) or (int(qty_wheels) % 2 == 1):
+            msg = f"The number of wheels must be even: {qty_wheels}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if flag_color_secondary.lower() == flag_color.lower():
+            msg = f"The second flag colour cannot be the same as the first colour:{flag_color_secondary}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not flag_color.isalpha():
+            msg = f"Please enter text for the flag colour!: {flag_color}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not flag_color_secondary.isalpha():
+            msg = f"Please enter text for the secondary colour!: {flag_color_secondary}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not qty_tyres.isdigit():
+            msg = f"You need to enter a number for the wheels!: {qty_tyres}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not qty_tyres >= qty_wheels:
+            msg = f"The number of tyres must be the same or greater than the number of wheels!:{qty_tyres}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not power_units.isdigit():
+            msg = f"Please enter a number for the primary power units!: {power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if int(power_units) < 1:
+            msg = f"The number of primary power units must be greater than 1: {power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not aux_power_units.isdigit():
+            msg = f"Please enter a number for the auxiliary power units!: {aux_power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not hamster_booster.isdigit():
+            msg = f"Please enter a number for the Hamster boosters!: {hamster_booster}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if not qty_attacks.isdigit():
+            msg = f"Please enter a number for the number of attacks!: {qty_attacks}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'fusion' and int(power_units) != 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {power_type, power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'thermo' and int(power_units) != 1:
+            msg = f"You can only have one unit for non consumable power!: {power_type, power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'solar' and int(power_units) != 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {power_type, power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if power_type == 'wind' and int(power_units) != 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {power_type, power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if aux_power_type == 'fusion' and int(aux_power_units) > 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {aux_power_type, aux_power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if aux_power_type == 'thermo' and int(aux_power_units) > 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {aux_power_type, aux_power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if aux_power_type == 'solar' and int(aux_power_units) > 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {aux_power_type, aux_power_units}"
+            return render_template("buggy-form.html", msg=msg, buggy=record)
+
+        if aux_power_type == 'wind' and int(aux_power_units) > 1:
+            msg = f"You are only allowed to have one unit for non consumable power!: {aux_power_type, aux_power_units}"
             return render_template("buggy-form.html", msg=msg, buggy=record)
 
         flag_color = request.form['flag_color'].strip()
@@ -250,36 +330,7 @@ def edit_buggy(buggy_id):
         banging = request.form['banging']
         algo= request.form['algo']
 
-        if not qty_wheels.isdigit():
-            msg = f"Oh no! This is not a number: {qty_wheels}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
-        if (int(qty_wheels) < 4) or (int(qty_wheels) % 2 == 1):
-            msg = f"The number of wheels must be even: {qty_wheels}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
 
-        if int(power_units) < 1:
-            msg = f"The number of primary power units must be greater than 1: {power_units}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
-
-        if not aux_power_units.isdigit():
-            msg = f"Please enter a number for the auxiliary power units.: {aux_power_units}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
-
-        if not hamster_booster.isdigit:
-            msg = f"Please enter a number for the Hamster boosters:  {hamster_booster}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
-
-        if not qty_attacks.isdigit:
-            msg = f"Please enter a number for the number of attacks! {qty_attacks}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
-
-        if power_type == 'thermo' and int(power_units) != 1:
-            msg = f"You are only allowed one unit for non-consumable power!: {power_units, power_units}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
-
-        if power_type == 'solar' and int(power_units) != 1:
-            msg = f"You are only allowed one unit for non-consumable power!: {power_units, pwoer_units}"
-            return render_template("buggy-form.html", msg=msg, buggy=record)
 
         total_cost=int(power_units)*costs[power_type.lower()] +int(aux_power_units)*costs[aux_power_type.lower()]+int(hamster_booster)*costs['hamster_booster']+\
                    int(aux_power_units)*costs[tyres.lower()] +costs[armour.lower()]+costs[attack.lower()]+int(fireproof)*costs['fireproof']+int(insulated)*costs['insulated']+int(antibiotic)*costs['antibiotic']
@@ -350,5 +401,8 @@ def delete_buggy(buggy_id):
         return render_template("updated.html", msg=msg)
 
 if __name__ == '__main__':
+    #    app = Flask(__name__)
+    #    app.config['FLASK_ENV']='production'
+    #    app.config['FLASK_ENV']='development'
     app.run(debug=True, host="localhost", port=5000)
 

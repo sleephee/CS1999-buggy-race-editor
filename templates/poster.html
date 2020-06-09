@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .cs1999-tasks {
+    border-top: 1px solid black;
+    margin-top: 4em;
+  }
+  .cs1999-tasks .task {
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid black;
+  }
+  .cs1999-tasks .task h2 {
+    border-bottom: 3px solid gray;
+  }
+</style>
+<head>
+<h1 style = "color:#9999ff;font-size:40px;">Design Your Own Buggy!</h1>
+</head>
+
+<p>
+<img src="\static\rene-buggy-1.png"/>
+    <br>
+<p style="color:#333399;font-size:20px;">You have full control over your design of the buggy!
+    <br>Make the best buggy so you can beat your enemies!
+    <br>You may choose any of the following features:
+</p>
+    <p style="color:#333399;font-size: 16px;">- The number of wheels!
+    <br>- Flag colours and pattern of your choice!
+    <br>- The power choice and its units!
+    <br>- The hamster boosters!
+    <br>- The aux power type and its units!
+    <br>- Attack choice method with your choice of your units!
+    <br>- Choosing from the following features of your buggy being: fireproof, insulated, anitbiotic, and banging!
+    <br>- Your buggy even has a race computer! Choose carefully and you will be able to beat your enemies!
+    <br> So race today and become the best! Good luck!
+</p>
+<p style="color:#333399;font-size:10px;">Please remember to follow the rules! This ensures that you won't be disqualified from the race!
+
+</p>
+
+</body>
+
+<section class="cs1999-tasks">
+
+  <div class="task">
+    <h2>0-GET</h2>
+    <p>
+      I forked the repo on GitHub and then used <code>git clone</code> to make a local copy.
+    </p>
+    <p>
+      Once the repo was on my own machine I was able to commit changes to version control
+      as I went along, and I pushed back up to my GitHub repo at the end of each day.
+      I followed GitHub's instructions and set up a SSH key so I didn't need to enter
+      username and password every time I pushed.
+    </p>
+  </div>
+
+    <div class="task">
+  <h2>0-RUN Get app running and view it in a browser</h2>
+  <p>
+    For RUN, I did git clone with the URL of the source repository. This pulls down the code and it has made a directory which I cd into.
+    I then created a virtual environment python -m venv venv which creates a directory ready to install the library files which are needed for the project.
+    You have to activate the virtual environment in the bin directory. After this I was able to pip install the requirements for this project which is requirements.txt
+    Then I initialised the database to be able to run the project. To run the web server i put it into development mode and run app.py
+  </p>
+  <p>
+      I used pycharm to install the requirements as pip install requirements.txt did not work for me. So i manually did it.
+  </p>
+</div>
+
+    <div class="task">
+  <h2>0-CHANGE Make a change to a template and see it appear</h2>
+  <p>
+      In the index.html I added "Hello World" into the header. This was just a test before doing more complex tasks.
+      I was able to git add index.html and then git commit it with a message and then I git pushed it which pushes the
+      changes I made back up into the repository on GitHub
+  </p>
+</div>
+
+<div class="task">
+  <h2>1-ADD Add more data to the form</h2>
+  <p>
+      In the database I added colour of the flag, the secondary flag colour and the flag pattern.
+      I copied the same format as the quantity wheels and added them into app.py.
+  </p>
+  <p>
+   I did make some small syntax errors like forgetting ',' or '?' This was easily solved although a little frustrating.
+  </p>
+</div>
+
+    <div class="task">
+  <h2>1-VALID Add basic data validation</h2>
+  <p>
+      For Validation, we used if statements for non digit numbers like the word 'banana' when inputted, it would show that it was not a valid answer and to input an integer.
+  </p>
+  <p>
+    For this part small syntax errors were made.
+  </p>
+</div>
+
+    <div class="task">
+  <h2>1-STYLE Style your editor just how you like it</h2>
+  <p>
+   I changed the colours of the diagonal stripes using a css colour code  from the interent. I also changed the layout of the tables and the button colours as well as the button hover colour. I decided to not
+      change so much of it as what I wanted to keep it quite simple.
+  </p>
+  <p>
+      The server wouldn't show the changes that were being made e.g the colours that were added. You had to clear the cache for this in order for it to show. Although I just went onto incognito mode to sort it out.
+  </p>
+</div>
+
+    <div class="task">
+  <h2>2-EDIT Edit the record by loading its current values into the form</h2>
+  <p>
+    Within the input form element, the value attribute is useful as it puts the value of what the form should already have. This means that we are able to show the current value.
+  </p>
+
+</div>
+
+
+    <div class="task">
+  <h2>2-FORM Make the form better</h2>
+  <p>
+    For FORM I had made it so that the user can easily see everything. I made it so that the making a buggy was split into two so that the user wouldn't have to scroll down as much. I also aligned it and double spaced the rows so they weren't stuck
+      together as they originally were.
+  </p>
+
+</div>
+
+    <div class="task">
+  <h2>2-COST Calculate and save the game cost of the buggy</h2>
+  <p>
+   I made a dictionary and had put all the prices into it. I then made it so that it could add all the prices together to make it appear on the show buggy section where it shows the total cost.
+  </p>
+
+</div>
+
+    <div class="task">
+  <h2>2-RULES Add validation according to the game rules</h2>
+  <p>
+      This task is similar to VALID which meant that I used if statements. If users had inputted in a value wrong like 3 wheels it would display a message that it would have to be 4 or above and even only.
+  </p>
+</div>
+
+    <div class="task">
+  <h2>3-ENV Switch to using development or production environments</h2>
+  <p>
+    I'm not too sure If I did this part correctly as I do get errors but I've left it in with # so you are able to see what I've done.
+  </p>
+</div>
+
+    <div class="task">
+  <h2>3-MULTI Allow different buggies to be created</h2>
+  <p>
+   I modified the app to create new buggies and to save them into show buggies. I also put in edit buttons which allowed the user to update their buggy.
+   When editing the buggies it will say in the heading Edit buggy with their ID number using a loop.
+
+  </p>
+</div>
+
+    <div class="task">
+  <h2>3-DEL Allow buggies to be deleted</h2>
+  <p>
+      Made a button for delete buggy. I decided that it was easier to have the delete button inside the show buggy because it meant that you could select which
+      buggies you wanted to delete.
+  </p>
+
+</div>
+<!-- this closes the section: keep it in! -->
+</section>
+
+{% endblock %}

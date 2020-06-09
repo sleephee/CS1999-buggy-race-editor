@@ -400,6 +400,17 @@ def delete_buggy(buggy_id):
         con.close()
         return render_template("updated.html", msg=msg)
 
+
+#---------------------------------------------------------------
+@app.route('/poster')
+def poster():
+    return render_template('poster.html')
+
+
+
+
+
+
 if __name__ == '__main__':
     #    app = Flask(__name__)
     #    app.config['FLASK_ENV']='production'
